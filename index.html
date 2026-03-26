@@ -22,8 +22,7 @@
   <meta property="og:title"       content="Currency Converter" />
   <meta property="og:description" content="Fast, elegant currency converter supporting 30+ world currencies. Built by Claude.ai." />
   <meta property="og:image"       content="preview.png" />
-  <!-- Replace the URL below with your actual GitHub Pages URL once deployed -->
-  <meta property="og:url"         content="https://ShahidAziz-2026.github.io/currency-converter/" />
+  <meta property="og:url"         content="https://shahidaziz-2026.github.io/currency-converter/" />
   <meta property="og:site_name"   content="Currency Converter" />
 
   <!-- Twitter card (bonus: also used by some link-preview engines) -->
@@ -561,12 +560,14 @@
       /* Return cached result if available */
       if (ratesCache[base]) return ratesCache[base];
 
-      const url = `https://api.frankfurter.app/latest?from=${base}`;
+      /* NOTE: The Frankfurter API moved from .app to .dev in 2025 */
+      const url = `https://api.frankfurter.dev/v1/latest?base=${base}`;
       const response = await fetch(url);
       if (!response.ok) throw new Error(`API error: ${response.status}`);
 
       const data = await response.json();
-      /* data.rates does NOT include the base currency itself, so we add it */
+      /* frankfurter.dev v1 returns { base, date, rates: { … } }
+         The base currency itself is not in rates, so we add it as 1 */
       ratesCache[base] = { ...data.rates, [base]: 1 };
       return ratesCache[base];
     }
